@@ -1,9 +1,8 @@
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.lang.Math;
 
 
-public class RecognizerAlgorithm {
+public class RecognizerAlgorithmFlatCutoff {
     // return n best list of gestures
     public static ArrayList<ReturnValues> Recognize(ReturnValues points, ArrayList<ArrayList<ReturnValues>> templates) {
 
