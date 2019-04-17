@@ -1,0 +1,7 @@
+.idea/
+*.iml
+out/
+*.ipr
+*.csv
+src/META-INF/MANIFEST.MF
+META-INF/MANIFEST.MF
