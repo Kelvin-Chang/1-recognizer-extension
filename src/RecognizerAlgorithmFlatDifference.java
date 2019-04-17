@@ -1,8 +1,7 @@
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 
-public class RecognizerAlgorithmFlatCutoff {
+public class RecognizerAlgorithmFlatDifference {
     // return n best list of gestures
     public static ArrayList<ReturnValues> Recognize(ReturnValues points, ArrayList<ArrayList<ReturnValues>> templates) {
 
