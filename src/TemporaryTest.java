@@ -100,17 +100,13 @@ public class TemporaryTest {
                             logger.write((trainingSampleSize + ",").getBytes());
 
                             // log total size of training set
-                            logger.write(((trainingSampleSize + 1) * 16 + ",").getBytes());
+                            logger.write(((trainingSampleSize) * 16 + ",").getBytes());
 
                             // log training set contents
                             logger.write(("\"{").getBytes());
                             for (int m = 0; m < trainingSet.size(); m++) {
                                 for (int n = 0; n < trainingSet.get(m).size(); n++) {
-                                    logger.write((userID + "-" + userData.get(m).get(n).gesture + "-" + userData.get(m).get(n).gestureNumber).getBytes());
-
-                                    if (m != trainingSet.size() - 1 && n != trainingSet.get(m).size() - 1) {
-                                        logger.write((",").getBytes());
-                                    }
+                                    logger.write((userID + "-" + userData.get(m).get(n).gesture + "-" + userData.get(m).get(n).gestureNumber + ",").getBytes());
                                 }
                             }
                             logger.write(("}\",").getBytes());
