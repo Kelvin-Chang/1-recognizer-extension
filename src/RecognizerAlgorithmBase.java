@@ -18,7 +18,6 @@ public class RecognizerAlgorithmBase {
                 if (d < b) {
                     b = d;
                     gestureNumber = j + 1;
-//                    gestureResult = templates.get(i).get(j).gesture;
                 }
             }
 
@@ -28,29 +27,7 @@ public class RecognizerAlgorithmBase {
             nbestList.add(new ReturnValues(templates.get(i).get(0).gesture, score, gestureNumber));
         }
 
-        // sort n best list and store into temp
-        ArrayList<ReturnValues> temp = new ArrayList<>();
-
-        // find greatest score/gesture, append to temp, remove from original list
-        while (!nbestList.isEmpty()) {
-            int bestGesture = 0;
-            double bestScore = Double.NEGATIVE_INFINITY;
-
-            // search list for best gesture score and index
-            for (int i = 0; i < nbestList.size(); i++) {
-                if (nbestList.get(i).score > bestScore) {
-                    bestScore = nbestList.get(i).score;
-                    bestGesture = i;
-                }
-            }
-
-            // add the gesture to the temp list
-            temp.add(nbestList.get(bestGesture));
-
-            // remove the gesture from the original list
-            nbestList.remove(bestGesture);
-        }
-
-        return temp;
+        // sort and return n best list
+        return RecognizerAlgorithm.NBestListSort(nbestList);
     }
 }

@@ -20,7 +20,11 @@ public class RecognizerAlgorithmFlatCutoff {
                 if (d < b) {
                     b = d;
                     gestureNumber = j + 1;
-//                    gestureResult = templates.get(i).get(j).gesture;
+                }
+
+                //
+                if (j == 0) {
+
                 }
             }
 

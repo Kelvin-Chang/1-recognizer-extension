@@ -57,6 +57,33 @@ public class RecognizerAlgorithm {
 //        return temp;
 //    }
 
+    public static ArrayList<ReturnValues> NBestListSort(ArrayList<ReturnValues> nbestList) {
+        // sort n best list and store into temp
+        ArrayList<ReturnValues> temp = new ArrayList<>();
+
+        // find greatest score/gesture, append to temp, remove from original list
+        while (!nbestList.isEmpty()) {
+            int bestGesture = 0;
+            double bestScore = Double.NEGATIVE_INFINITY;
+
+            // search list for best gesture score and index
+            for (int i = 0; i < nbestList.size(); i++) {
+                if (nbestList.get(i).score > bestScore) {
+                    bestScore = nbestList.get(i).score;
+                    bestGesture = i;
+                }
+            }
+
+            // add the gesture to the temp list
+            temp.add(nbestList.get(bestGesture));
+
+            // remove the gesture from the original list
+            nbestList.remove(bestGesture);
+        }
+
+        return temp;
+    }
+
     // n gives the number of resampled points
     public static ArrayList<Point2D.Double> Resample(ArrayList<Point2D.Double> arrayList, int n) {
         ArrayList<Point2D.Double> newPoints = new ArrayList<>();

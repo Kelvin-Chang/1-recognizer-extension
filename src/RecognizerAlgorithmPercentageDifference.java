@@ -20,7 +20,6 @@ public class RecognizerAlgorithmPercentageDifference {
                 if (d < b) {
                     b = d;
                     gestureNumber = j + 1;
-//                    gestureResult = templates.get(i).get(j).gesture;
                 }
             }
 
