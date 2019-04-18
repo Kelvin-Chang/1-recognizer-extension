@@ -122,7 +122,7 @@ public class TemporaryTest {
                             logger.write((nbestList.get(0).gesture + ",").getBytes());
 
                             // log correct (1) or incorrect (0)
-                            if (nbestList.get(0).gesture.equals(userData.get(iteration).get(9).gesture)) {
+                            if (nbestList.get(0).gesture.equals(userData.get(gestureID).get(9).gesture)) {
                                 logger.write((1 + ",").getBytes());
                             }
                             else {
