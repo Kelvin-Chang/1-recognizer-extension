@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class RecognizerAlgorithmBase {
-    // return n best list of gestures
+    // return n best list of gestures (only best gesture score and gesture type out of all gesture samples per gesture type)
     public static ArrayList<ReturnValues> Recognize(ReturnValues points, ArrayList<ArrayList<ReturnValues>> templates) {
 
         ArrayList<ReturnValues> nbestList = new ArrayList<>();

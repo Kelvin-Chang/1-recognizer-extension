@@ -1,4 +1,3 @@
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TestBaseAlgorithm {
+public class TemporaryTest {
     public static void main(String[] args) {
         String user = "";
         String gestureType = "";
@@ -18,12 +17,12 @@ public class TestBaseAlgorithm {
 
         // create log file if it doesnt exist, erase log file if it does exist
         try {
-            File file = new File("logfileBase.csv");
+            File file = new File("logfileTest.csv");
             if (!file.exists()) {
                 file.createNewFile();
             } else {
                 // overwrite file if it already exists
-                FileOutputStream writer = new FileOutputStream("logfileBase.csv", false);
+                FileOutputStream writer = new FileOutputStream("logfileTest.csv", false);
                 writer.write(("").getBytes());
                 writer.close();
             }
@@ -33,7 +32,7 @@ public class TestBaseAlgorithm {
 
         // start write stream for logging
         try {
-            FileOutputStream logger = new FileOutputStream("logfileBase.csv", true);
+            FileOutputStream logger = new FileOutputStream("logfileTest.csv", true);
             // write description to file
             logger.write(("Recognition Log: [Kelvin Chang] // [$1 Recognizer] // [$1 recognizer dataset] // USER-DEPENDENT RANDOM-100,,,,,,,,,,,\n").getBytes());
 
@@ -41,85 +40,75 @@ public class TestBaseAlgorithm {
             logger.write(("User[all-users],GestureType[all-gestures-types],RandomIteration[1to100],#ofTrainingExamples[E],TotalSizeOfTrainingSet[count],TrainingSetContents[specific-gesture-instances],Candidate[specific-instance],RecoResultGestureType[what-was-recognized],CorrectIncorrect[1or0],RecoResultScore,RecoResultBestMatch[specific-instance],RecoResultNBestSorted[instance-and-score]\n").getBytes());
 
             // for each user
-            for (int i = 2; i <= 11; i++) {
-                if (i < 10) {
-                    user = "s" + "0" + i;
+            for (int userID = 2; userID <= 11; userID++) {
+                if (userID < 10) {
+                    user = "s" + "0" + userID;
                 } else {
-                    user = "s" + i;
+                    user = "s" + userID;
                 }
 
                 // populate userData with all of user's gestures
-                for (int j = 0; j < 16; j++) {
-                    gestureType = HelperFunctions.GestureType(j);
+                for (int gestureID = 0; gestureID < 16; gestureID++) {
+                    gestureType = HelperFunctions.GestureType(gestureID);
                     userData.add(HelperFunctions.BuildGestures(user, gestureType));
                 }
 
-                // for each gesture
-                for (int j = 0; j < 16; j++) {
-                    // repeat test 100 times
-                    for (int k = 0; k < 100; k++) {
-                        // for training sample sizes 2 to 9
-                        for (int l = 2; l <= 9; l++) {
-                            // shuffle gestures before testing each training sample size for maximum randomness
-                            // dont need to shuffle a final time (should be faster?)
-                            for (int m = 0; m < userData.size(); m++) {
-                                Collections.shuffle(userData.get(m));
+                // repeat test 100 times
+                for (int iteration = 0; iteration < 100; iteration++) {
+                    // for training sample sizes 2 to 9
+                    for (int trainingSampleSize = 2; trainingSampleSize <= 9; trainingSampleSize++) {
+                        // shuffle user data for each gesture to create randomness
+                        for (int l = 0; l < userData.size(); l++) {
+                            Collections.shuffle(userData.get(l));
+                        }
+
+                        // temp arraylist to store training set of size k
+                        ArrayList<ArrayList<ReturnValues>> trainingSet = new ArrayList();
+
+                        // populate temp arraylist
+                        // for each gesture
+                        for (int gestureID = 0; gestureID < 16; gestureID++) {
+                            // for training sample size of k
+                            ArrayList<ReturnValues> tempGestureSet = new ArrayList<>();
+
+                            // populate gesture arraylist with appropriate number of training samples
+                            for (int trainingSampleNumber = 0; trainingSampleNumber < trainingSampleSize; trainingSampleNumber++) {
+                                tempGestureSet.add(userData.get(gestureID).get(trainingSampleNumber));
                             }
 
-                            // temp arraylist to store training set of size l
-                            ArrayList<ArrayList<ReturnValues>> temp = new ArrayList();
+                            // add gesture arraylist into training set
+                            trainingSet.add(tempGestureSet);
+                        }
 
-                            // initialize arraylist with an arraylist for each gesture
-                            for (int m = 0; m < 16; m++) {
-                                temp.add(new ArrayList<>());
-                            }
-
-                            // add 'l' training samples to temp arraylist
-                            for (int m = 0; m < l; m++) {
-                                // for each gesture
-                                for (int n = 0; n < 16; n++) {
-                                    // add to the list (n gestureType, m gesture number)
-                                    temp.get(n).add(userData.get(n).get(m));
-                                }
-                            }
-
-                            // run test
-
-                            // store final (index 9) gesture of gesture type that is being tested in userData as the input gesture
-                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmBase.Recognize(userData.get(j).get(9), temp);
-
-                            // small accuracy analysis here------------------------------------------------------
-                            // leaving this separate from the actual logging for clarity
-                            if (nbestList.get(0).gesture.equals(userData.get(j).get(9).gesture)) {
-                                // user (i) starts at 2, training sample (l) starts at 1 so decrement accordingly to compensate
-                                perUserAccuracy[i - 2]++;
-                                numberTrainingSamplesAccuracy[l - 1]++;
-                            }
+                        // run test on each gesture for the created training set
+                        for (int gestureID = 0; gestureID < 16; gestureID++) {
+                            // get n-best list by passing in a gesture to be tested (9th index to get final element that will never be added to the training set) and the previously created training set
+                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmBase.Recognize(userData.get(gestureID).get(9), trainingSet);
 
                             // log data here----------------------------------------------------------------------
 
                             // log user (i)
-                            logger.write((i + ",").getBytes());
+                            logger.write((userID + ",").getBytes());
 
                             // log gesture type (j)
-                            logger.write((HelperFunctions.GestureType(j) + ",").getBytes());
+                            logger.write((HelperFunctions.GestureType(gestureID) + ",").getBytes());
 
                             // log iteration number (k + 1) (+1 because loop starts at 0)
-                            logger.write((k + 1 + ",").getBytes());
+                            logger.write((iteration + 1 + ",").getBytes());
 
                             // log number of training examples (l)
-                            logger.write((l + ",").getBytes());
+                            logger.write((trainingSampleSize + ",").getBytes());
 
-                            // log total size of training set (16 gestures, k + 1 samples per gesture)
-                            logger.write(((k + 1) * 16 + ",").getBytes());
+                            // log total size of training set
+                            logger.write(((trainingSampleSize + 1) * 16 + ",").getBytes());
 
                             // log training set contents
                             logger.write(("\"{").getBytes());
-                            for (int m = 0; m < temp.size(); m++) {
-                                for (int n = 0; n < temp.get(m).size(); n++) {
-                                    logger.write((i + "-" + userData.get(m).get(n).gesture + "-" + userData.get(m).get(n).gestureNumber).getBytes());
+                            for (int m = 0; m < trainingSet.size(); m++) {
+                                for (int n = 0; n < trainingSet.get(m).size(); n++) {
+                                    logger.write((userID + "-" + userData.get(m).get(n).gesture + "-" + userData.get(m).get(n).gestureNumber).getBytes());
 
-                                    if (m != temp.size() - 1 && n != temp.get(m).size() - 1) {
+                                    if (m != trainingSet.size() - 1 && n != trainingSet.get(m).size() - 1) {
                                         logger.write((",").getBytes());
                                     }
                                 }
@@ -127,13 +116,13 @@ public class TestBaseAlgorithm {
                             logger.write(("}\",").getBytes());
 
                             // log candidate
-                            logger.write((i + "-" + userData.get(j).get(9).gesture + "-" + userData.get(j).get(9).gestureNumber + ",").getBytes());
+                            logger.write((userID + "-" + userData.get(gestureID).get(9).gesture + "-" + userData.get(gestureID).get(9).gestureNumber + ",").getBytes());
 
                             // log recognized gesture (first element in nbest list)
                             logger.write((nbestList.get(0).gesture + ",").getBytes());
 
                             // log correct (1) or incorrect (0)
-                            if (nbestList.get(0).gesture.equals(userData.get(j).get(9).gesture)) {
+                            if (nbestList.get(0).gesture.equals(userData.get(iteration).get(9).gesture)) {
                                 logger.write((1 + ",").getBytes());
                             }
                             else {
@@ -144,7 +133,7 @@ public class TestBaseAlgorithm {
                             logger.write((nbestList.get(0).score + ",").getBytes());
 
                             // log best match instance
-                            logger.write((i + "-" + nbestList.get(0).gesture + "-" + nbestList.get(0).gestureNumber + ",").getBytes());
+                            logger.write((userID + "-" + nbestList.get(0).gesture + "-" + nbestList.get(0).gestureNumber + ",").getBytes());
 
                             // log n best list
 //                            logger.write(("\"{").getBytes());
@@ -168,16 +157,12 @@ public class TestBaseAlgorithm {
 
                             // new line for end of logging this testing instance
                             logger.write(("\n").getBytes());
+
                         }
+
                     }
                 }
-
-                // clear user data after testing each user
-                userData.clear();
             }
-
-            // close logger after testing is completed
-            logger.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
