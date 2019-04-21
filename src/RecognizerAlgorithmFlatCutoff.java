@@ -28,7 +28,7 @@ public class RecognizerAlgorithmFlatCutoff {
                     double tempScore = 1 - b / (.5 * Math.sqrt(250 * 250 + 250 * 250));
 
                     // check against flat cutoff
-                    if (tempScore < .8) {
+                    if (tempScore < .7) {
                         // skip current gesture testing set
                         break;
                     }

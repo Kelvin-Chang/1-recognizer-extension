@@ -81,7 +81,7 @@ public class TestFlatCutoffAlgorithm {
                         // run test on each gesture for the created training set
                         for (int gestureID = 0; gestureID < 16; gestureID++) {
                             // get n-best list by passing in a gesture to be tested (9th index to get final element that will never be added to the training set) and the previously created training set
-                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmBase.Recognize(userData.get(gestureID).get(9), trainingSet);
+                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmFlatCutoff.Recognize(userData.get(gestureID).get(9), trainingSet);
 
                             // log data here----------------------------------------------------------------------
 
