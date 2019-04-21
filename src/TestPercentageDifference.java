@@ -15,12 +15,12 @@ public class TestPercentageDifference {
 
         // create log file if it doesnt exist, erase log file if it does exist
         try {
-            File file = new File("logfileFlatDifference.csv");
+            File file = new File("logfilePercentageDifference.csv");
             if (!file.exists()) {
                 file.createNewFile();
             } else {
                 // overwrite file if it already exists
-                FileOutputStream writer = new FileOutputStream("logfileFlatDifference.csv", false);
+                FileOutputStream writer = new FileOutputStream("logfilePercentageDifference.csv", false);
                 writer.write(("").getBytes());
                 writer.close();
             }
@@ -30,7 +30,7 @@ public class TestPercentageDifference {
 
         // start write stream for logging
         try {
-            FileOutputStream logger = new FileOutputStream("logfileFlatDifference.csv", true);
+            FileOutputStream logger = new FileOutputStream("logfilePercentageDifference.csv", true);
             // write description to file
             logger.write(("Recognition Log: [Kelvin Chang] // [$1 Recognizer] // [$1 recognizer dataset] // USER-DEPENDENT RANDOM-100,,,,,,,,,,,\n").getBytes());
 
