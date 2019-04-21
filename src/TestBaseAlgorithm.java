@@ -13,10 +13,6 @@ public class TestBaseAlgorithm {
         String gestureType = "";
         ArrayList<ArrayList<ReturnValues>> userData = new ArrayList<>();
 
-        // accuracy per user and based on number of training samples, will most likely remove in the future and use log file to calculate statistics
-        int[] perUserAccuracy = new int[10];
-        int[] numberTrainingSamplesAccuracy = new int[9];
-
         // create log file if it doesnt exist, erase log file if it does exist
         try {
             File file = new File("logfileBase.csv");
@@ -170,19 +166,5 @@ public class TestBaseAlgorithm {
 
         // print elapsed time
         System.out.println(stopWatch.getElapsedTime());
-
-        // 16 gesture types, 100 iterations, 8 training sample sizes
-        for (int i = 0; i < perUserAccuracy.length; i++) {
-            int userNum = i + 2;
-            double tempAccuracy = 1.0 - (double) perUserAccuracy[i] / (16 * 100 * 8);
-            System.out.println("User " + userNum + ": " + tempAccuracy);
-        }
-
-        // 16 gesture types, 100 iterations, 10 users
-        for (int i = 0; i < numberTrainingSamplesAccuracy.length; i++) {
-            int sampleNum = i + 1;
-            double tempAccuracy = 1.0 - (double) numberTrainingSamplesAccuracy[i] / (16 * 100 * 10);
-            System.out.println("Number of Training Samples " + sampleNum + ": " + tempAccuracy);
-        }
     }
 }
