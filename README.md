@@ -9,3 +9,6 @@ Three different threshold implementations are included in this extension as well
 The tests are run on their correspondingly named testing files. A stopwatch class is invoked in each test to log how long each test takes. The algorithms runtime was tested using the random-100 method described in the $1 recognizer paper (available http://faculty.washington.edu/wobbrock/pubs/uist-07.01.pdf)
 
 All three thresholds performed similarly with marked increases in runtime and little to no sacrifices to accuracy.
+
+##Demo
+A demo is included. The demo uses a predefined training set of size 9 and runs the 3 threshold implementations and the base algorithm. In order to run the demo, open Demo.java and begin drawing. Results will be shown in the GUI that loads and will reset every time you start drawing a new gesture.
