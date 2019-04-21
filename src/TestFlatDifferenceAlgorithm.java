@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TemporaryTest {
+public class TestFlatDifferenceAlgorithm {
     public static void main(String[] args) {
+        StopWatch stopWatch = new StopWatch();
+
         String user = "";
         String gestureType = "";
         ArrayList<ArrayList<ReturnValues>> userData = new ArrayList<>();
@@ -17,12 +19,12 @@ public class TemporaryTest {
 
         // create log file if it doesnt exist, erase log file if it does exist
         try {
-            File file = new File("logfileTest.csv");
+            File file = new File("logfileFlatDifference.csv");
             if (!file.exists()) {
                 file.createNewFile();
             } else {
                 // overwrite file if it already exists
-                FileOutputStream writer = new FileOutputStream("logfileTest.csv", false);
+                FileOutputStream writer = new FileOutputStream("logfileFlatDifference.csv", false);
                 writer.write(("").getBytes());
                 writer.close();
             }
@@ -32,7 +34,7 @@ public class TemporaryTest {
 
         // start write stream for logging
         try {
-            FileOutputStream logger = new FileOutputStream("logfileTest.csv", true);
+            FileOutputStream logger = new FileOutputStream("logfileFlatDifference.csv", true);
             // write description to file
             logger.write(("Recognition Log: [Kelvin Chang] // [$1 Recognizer] // [$1 recognizer dataset] // USER-DEPENDENT RANDOM-100,,,,,,,,,,,\n").getBytes());
 
@@ -83,7 +85,7 @@ public class TemporaryTest {
                         // run test on each gesture for the created training set
                         for (int gestureID = 0; gestureID < 16; gestureID++) {
                             // get n-best list by passing in a gesture to be tested (9th index to get final element that will never be added to the training set) and the previously created training set
-                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmBase.Recognize(userData.get(gestureID).get(9), trainingSet);
+                            ArrayList<ReturnValues> nbestList = RecognizerAlgorithmFlatDifference.Recognize(userData.get(gestureID).get(9), trainingSet);
 
                             // log data here----------------------------------------------------------------------
 
@@ -165,6 +167,9 @@ public class TemporaryTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // print elapsed time
+        System.out.println(stopWatch.getElapsedTime());
 
         // 16 gesture types, 100 iterations, 8 training sample sizes
         for (int i = 0; i < perUserAccuracy.length; i++) {

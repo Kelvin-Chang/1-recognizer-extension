@@ -17,14 +17,21 @@ public class RecognizerAlgorithmFlatCutoff {
             for (int j = 0; j < templates.get(i).size(); j++) {
                 double d = RecognizerAlgorithm.DistanceAtBestAngle(points.points, templates.get(i).get(j).points, -1 * Math.toRadians(45), Math.toRadians(45), Math.toRadians(2));
 
+                // automatically stores the first gesture per gesture type set as best before changing it based on future tests
                 if (d < b) {
                     b = d;
                     gestureNumber = j + 1;
                 }
 
-                //
+                // check first template score of gestures starting from first gesture type. if the score is too low, skip the rest of the gestures
                 if (j == 0) {
+                    double tempScore = 1 - b / (.5 * Math.sqrt(250 * 250 + 250 * 250));
 
+                    // check against flat cutoff
+                    if (tempScore < .8) {
+                        // skip current gesture testing set
+                        break;
+                    }
                 }
             }
 
