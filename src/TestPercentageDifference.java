@@ -13,6 +13,9 @@ public class TestPercentageDifference {
         String gestureType = "";
         ArrayList<ArrayList<ReturnValues>> userData = new ArrayList<>();
 
+        // size 8 for training set sizes 2-9
+        double[] timePerTrainingSamples = new double[8];
+
         // create log file if it doesnt exist, erase log file if it does exist
         try {
             File file = new File("logfilePercentageDifference.csv");
@@ -80,8 +83,14 @@ public class TestPercentageDifference {
 
                         // run test on each gesture for the created training set
                         for (int gestureID = 0; gestureID < 16; gestureID++) {
+                            //log time-------------------
+                            StopWatch tempTimer = new StopWatch();
+
                             // get n-best list by passing in a gesture to be tested (9th index to get final element that will never be added to the training set) and the previously created training set
                             ArrayList<ReturnValues> nbestList = RecognizerAlgorithmPercentageDifference.Recognize(userData.get(gestureID).get(9), trainingSet);
+
+                            // log time------------------
+                            timePerTrainingSamples[trainingSampleSize - 2] += tempTimer.getElapsedTime();
 
                             // log data here----------------------------------------------------------------------
 
@@ -166,5 +175,9 @@ public class TestPercentageDifference {
 
         // print elapsed time
         System.out.println(stopWatch.getElapsedTime());
+
+        for (int i = 0; i < timePerTrainingSamples.length; i++) {
+            System.out.println("training sample size " + i + 2 + ": " + timePerTrainingSamples[i]);
+        }
     }
 }
